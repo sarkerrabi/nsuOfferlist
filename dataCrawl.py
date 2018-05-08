@@ -1,20 +1,15 @@
 import urllib.request
 from bs4 import BeautifulSoup
 from Course import Course
-import mysql.connector
-from mysql.connector import Error
-
-
-
+from connection import Db
 
 
 def getDataFromURL():
-
     # url = "https://rds1.northsouth.edu/index.php/showofferedcourses"
     # source_code = urllib.request.urlopen(url)
     #
     # soup = BeautifulSoup(source_code.read(), "html.parser")
-    soup = BeautifulSoup(open("weblink/FALL2017/OnlinePortalNorthSouthUniversity.html"), "html.parser")
+    soup = BeautifulSoup(open("weblink/SPRING2018/OnlinePortalNorthSouthUniversity.html"), "html.parser")
 
     for tr in soup.find_all('tr'):
         course = Course()
@@ -32,10 +27,23 @@ def getDataFromURL():
             course.set_time(crs[4])
             course.set_room(crs[5])
             course.set_capacity(crs[6])
+        # print(course.get_name())
         print(course.get_name())
+        if (course.get_no()!= None or course.get_name()!= None or course.get_sec()!= None or course.get_faculty()!= None or course.get_time()!= None or course.get_room()!= None or course.get_capacity()!= None):
+            insertIntoDatabase(course, "SPRING18")
 
 
+def insertIntoDatabase(course, semester):
+    db = Db()
+    conn = db.connect()
+    cur = conn.cursor()
+    # query = "insert into offerlist( semesterName, courseNo, courseName, sec, faculty, time, room, capacity) values ('summer','1','cse115',1,'akr','n/a','141','40/40')"
+
+    query = "insert into offerlist( semesterName, courseNo, courseName, sec, faculty, time, room, capacity) values (%s,%s,%s,%s,%s,%s,%s,%s)"
+
+    cur.execute(query, (semester, course.get_no(), course.get_name(), course.get_sec(), course.get_faculty(), course.get_time(), course.get_room(), course.get_capacity()))
+    conn.commit()
 
 
-
+# insertIntoDatabase()
 getDataFromURL()
