@@ -1,6 +1,7 @@
 class Course:
 
-    def __init__(self, no=None, name=None, sec=None, faculty=None, time=None, room=None, capacity=None):
+    def __init__(self, semester=None, no=None, name=None, sec=None, faculty=None, time=None, room=None, capacity=None):
+        self.__semester = semester
         self.__no = no
         self.__name = name
         self.__sec = sec
@@ -9,7 +10,8 @@ class Course:
         self.__room = room
         self.__capacity = capacity
 
-
+    def get_semester(self):
+        return self.__semester
 
     def get_no(self):
         return self.__no
@@ -52,3 +54,6 @@ class Course:
 
     def set_capacity(self, capacity):
         self.__capacity = capacity
+
+    def set_semester(self, semester):
+        self.__semester = semester

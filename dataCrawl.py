@@ -29,7 +29,7 @@ def getDataFromURL():
             course.set_capacity(crs[6])
         # print(course.get_name())
         print(course.get_name())
-        if (course.get_no()!= None or course.get_name()!= None or course.get_sec()!= None or course.get_faculty()!= None or course.get_time()!= None or course.get_room()!= None or course.get_capacity()!= None):
+        if course.get_no() is not None or course.get_name() is not None or course.get_sec()!= None or course.get_faculty()!= None or course.get_time()!= None or course.get_room()!= None or course.get_capacity()!= None:
             insertIntoDatabase(course, "SPRING18")
 
 
@@ -39,11 +39,20 @@ def insertIntoDatabase(course, semester):
     cur = conn.cursor()
     # query = "insert into offerlist( semesterName, courseNo, courseName, sec, faculty, time, room, capacity) values ('summer','1','cse115',1,'akr','n/a','141','40/40')"
 
-    query = "insert into offerlist( semesterName, courseNo, courseName, sec, faculty, time, room, capacity) values (%s,%s,%s,%s,%s,%s,%s,%s)"
+    query = "insert into offerlist( semesterName, courseNo, courseName, sec, faculty, coursetime, room, capacity) values (%s,%s,%s,%s,%s,%s,%s,%s)"
 
     cur.execute(query, (semester, course.get_no(), course.get_name(), course.get_sec(), course.get_faculty(), course.get_time(), course.get_room(), course.get_capacity()))
     conn.commit()
 
 
 # insertIntoDatabase()
-getDataFromURL()
+# getDataFromURL()
+
+def showResult():
+    db = Db()
+    # conn = db.connect()
+    # cur = conn.cursor()
+    db.searchQuery("ACT201")
+
+
+showResult()
